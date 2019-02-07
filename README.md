@@ -129,3 +129,23 @@ def get_user_tweets(user_id, count=MAX_POST_COUNT):
 ```
 
 Define the **extract_status_info()** function so we can loop through the status list and extract all the needed information.
+
+```python
+def extract_status_info(status):
+    # Get the values from the key items
+    name = status['user'].__dict__['name']
+    screen_name = status['user'].__dict__['screen_name']
+    id_str = status['user'].__dict__['id_str']
+    created_date = status['created_at']
+    text = status['full_text']
+    retweet_count = status['retweet_count']
+    favorite_count = status['favorite_count']
+    geo = status['geo']
+    if text.lower().startswith("rt @") == True:
+        retweet = "True"
+    else:
+        retweet = "False"
+    return name, screen_name, id_str, created_date, text, retweet_count, favorite_count, geo, retweet
+```
+
+Then load the data set, get the id list. Then loop throught the list and downloading all data on Twitter.
