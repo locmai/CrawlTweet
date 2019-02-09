@@ -6,14 +6,15 @@ import time
 
 # Default variables
 MAX_POST_COUNT = 10
-SINCE_ID = 1079764115688747009
+SINCE_ID = None
 DATASET_FILENAME = "data.csv"
+RESULT_FILENAME = "results.csv"
 TWITTER_ID_HEADER = "social/twitter_id"
 
-CONSUMER_API_KEY = ""
-CONSUMER_SECRET_KEY = ""
-ACCESS_KEY = ""
-ACCESS_SECRET = ""
+CONSUMER_API_KEY = "njp3CtCFj8D9dqKO2l9vz8RxH"
+CONSUMER_SECRET_KEY = "lpAUmE6xrLxzQkxa4S6nmotP5tOrcPIs4grMLk0YMgzCCO92wK"
+ACCESS_KEY = "1419669198-aNFMW72ZE9Hk8Tb49MFoSOB7KiW7SmMWgkZQpVs"
+ACCESS_SECRET = "Y7SWEd8lDlNJgfTmWp9SqAIOzrGiF3wbbgwBhyFoMkilx"
 
 print("Starting ...")
 
@@ -56,13 +57,12 @@ def extract_status_info(status):
 
 
 # Get the start time
-start = time.time()
 
 counting = 0
 
 twitter_data = pd.read_csv(DATASET_FILENAME)[TWITTER_ID_HEADER].dropna()
 
-with open('result.csv', 'w', newline='') as csvfile:
+with open(RESULT_FILENAME, 'w', newline='') as csvfile:
 
     writer = csv.writer(csvfile, delimiter=',')
 
@@ -76,18 +76,15 @@ with open('result.csv', 'w', newline='') as csvfile:
         print(f'Processing ID: {twitter_id} .Number: {counting}')
 
         try:
+            start = time.time()
             tweets = get_user_tweets(int(twitter_id))
 
             for tweet in tweets:
                 writer.writerow(extract_status_info(tweet))
-
-            print(f'Done processing for ID: {twitter_id}. Number: {counting}')
+            end = time.time() - start
+            print(
+                f'Done processing for ID: {twitter_id}. Number: {counting} in {end} seconds')
 
         except tweepy.TweepError:
             print(
                 f'Failed to get the info from user ({twitter_id}), number {counting}, skipping...')
-
-# Print out the execution time
-end = time.time()
-
-print(end - start)
