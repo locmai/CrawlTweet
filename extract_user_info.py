@@ -55,7 +55,7 @@ with open(RESULT_FILENAME, 'w', newline='') as csvfile:
 
         try:
             start = time.time()
-            user = api.get_user(user_id=twitter_id).__dict__
+            user = api.get_user(user_id=int(twitter_id)).__dict__
             writer.writerow(extract_user_info(user))
             end = time.time() - start
             print(
